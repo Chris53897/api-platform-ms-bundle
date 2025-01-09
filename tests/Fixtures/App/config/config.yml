@@ -10,12 +10,22 @@ api_platform:
     json: ['application/merge-patch+json']
     jsonapi: ['application/vnd.api+json']
   name_converter: Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
+  serializer:
+    hydra_prefix: false
+  use_symfony_listeners: false
 
 framework:
   secret: ThisIsSecret
   test: true
+  annotations: false
+  handle_all_throwables: true
+  http_method_override: false
+  php_errors:
+    log: false
   router:
     utf8: true
+  validation:
+    email_validation_mode: html5
 
 api_platform_ms:
   name: foo

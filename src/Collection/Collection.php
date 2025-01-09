@@ -13,6 +13,8 @@ class_exists(Pagination::class);
  *
  * @template T of object
  *
+ * @implements \IteratorAggregate<T>
+ *
  * @author Mathias Arlaud <mathias.arlaud@gmail.com>
  */
 class Collection implements \IteratorAggregate, \Countable
@@ -25,7 +27,7 @@ class Collection implements \IteratorAggregate, \Countable
     public function __construct(
         private readonly array $elements,
         private readonly int $count,
-        private readonly ?Pagination $pagination = null
+        private readonly ?Pagination $pagination = null,
     ) {
     }
 

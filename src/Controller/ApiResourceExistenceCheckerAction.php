@@ -2,7 +2,7 @@
 
 namespace Mtarld\ApiPlatformMsBundle\Controller;
 
-use ApiPlatform\Api\IriConverterInterface;
+use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Validator\ValidatorInterface;
 use Mtarld\ApiPlatformMsBundle\Dto\ApiResourceExistenceCheckerPayload;
 use Mtarld\ApiPlatformMsBundle\Dto\ApiResourceExistenceCheckerView;
@@ -27,14 +27,13 @@ class ApiResourceExistenceCheckerAction
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly IriConverterInterface $iriConverter,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
     ) {
     }
 
     public function __invoke(Request $request): JsonResponse
     {
-        // BC layer to support symfony/http-foundation 6.1
-        $contentType = method_exists($request, 'getContentTypeFormat') ? $request->getContentTypeFormat() : $request->getContentType();
+        $contentType = $request->getContentTypeFormat();
 
         if (null === $contentType) {
             throw new BadRequestHttpException('Content type is not supported');
@@ -66,7 +65,7 @@ class ApiResourceExistenceCheckerAction
     {
         try {
             $this->iriConverter->getResourceFromIri($iri);
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return false;
         }
 
